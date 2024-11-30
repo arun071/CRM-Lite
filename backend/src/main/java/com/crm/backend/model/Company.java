@@ -20,4 +20,7 @@ public class Company {
     private String phone;
     private String website;
     private String address;
+    @ManyToOne // Assuming a Company can be associated with one User
+    @JoinColumn(name = "user_id", nullable = false) // Sets the foreign key column
+    private User user;
 }

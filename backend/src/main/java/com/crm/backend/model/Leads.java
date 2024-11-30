@@ -18,7 +18,9 @@ public class Leads {
     @ManyToOne
     @JoinColumn(name = "contact_id")
     private Contact contact;
-
+    @ManyToOne // Assuming a Company can be associated with one User
+    @JoinColumn(name = "user_id", nullable = false) // Sets the foreign key column
+    private User user;
     @Enumerated(EnumType.STRING)
     private LeadStatus status;
     private String source;

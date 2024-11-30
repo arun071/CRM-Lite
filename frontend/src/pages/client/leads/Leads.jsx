@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AddLead from "./AddLead";
+import AddLeadModal from "./AddLead";
 
 export default function Leads() {
   const [searchTerm, setSearchTerm] = useState(""); // Search input state
@@ -13,11 +14,14 @@ export default function Leads() {
 
   // Fetch leads data
   const fetchLeads = async () => {
+  const userName = sessionStorage.getItem('userName');
+
     try {
       const url = searchTerm
-        ? `http://localhost:8080/api/leads/search?query=${searchTerm}`
-        : `http://localhost:8080/api/leads`;
+        ? `http://localhost:8080/api/leads/u/${userName}/search?query=${searchTerm}`
+        : `http://localhost:8080/api/leads/u/${userName}`;
       const response = await axios.get(url);
+      console.log(response.data);
       setLeads(response.data);
     } catch (err) {
       console.error("Error fetching leads:", err);
@@ -55,9 +59,9 @@ export default function Leads() {
         <tbody>
           {leads.length > 0 ? (
             leads.map((lead, index) => (
-              <tr key={lead.id} className="border-b hover:bg-gray-50">
+              <tr key={index} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">{lead.contact?.firstName || "N/A"}</td>
+                <td className="px-4 py-2">{lead.contactName || "N/A"}</td>
                 <td className="px-4 py-2">{lead.status || "N/A"}</td>
                 <td className="px-4 py-2">{lead.source || "N/A"}</td>
                 <td className="px-4 py-2">{lead.estimatedValue || "N/A"}</td>
@@ -85,7 +89,7 @@ export default function Leads() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <AddLead closeModal={closeModal} onLeadAdded={fetchLeads} />
+            <AddLeadModal closeModal={closeModal} onLeadAdded={fetchLeads} />
           </div>
         </div>
       )}

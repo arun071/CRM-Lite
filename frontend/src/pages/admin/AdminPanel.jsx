@@ -8,9 +8,9 @@ import Products from "./Products";
 import Activities from "./Activities";
 import Sidebar from "./Sidebar";
 import Leads from "../client/leads/Leads";
-import Contacts from "../client/Contact/Contacts";
 import Company from "../client/company/Company";
 import PageNotFound from "./PageNotFound";
+import Contacts from "../client/contact/Contacts";
 
 export default function AdminPanel() {
     return (
@@ -18,9 +18,8 @@ export default function AdminPanel() {
             <Sidebar />
             {/* Main Content */}
             <main className="flex-grow p-6">
+                
                 <Routes>
-                    
-                    <Route path="/home" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/pipelines" element={<Pipelines />} />
                     <Route path="/contacts" element={<Contacts />} />

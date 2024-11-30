@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const UserCard = () => {
     const [user, setUser] = useState(null);
@@ -17,8 +18,17 @@ const UserCard = () => {
         try {
             const response = await axios.get("http://localhost:8080/api/v1/userinfo", {
                 withCredentials: true,
-            });;
+            });
+             // Store userId in sessionStorage
+             sessionStorage.setItem('userId', response.data.id);
+             // Retrieve userId from sessionStorage
+             const userId = sessionStorage.getItem('userId');
+             console.log(userId); // '12345'
+             console.log(response.data)
             setUser(response.data);
+           
+
+
         } catch (err) {
             console.error("Error fetching user data:", err);
             setError("Failed to fetch user data. Please try again.");
@@ -61,7 +71,7 @@ const UserCard = () => {
                     <div className="my-auto flex flex-col items-center ">
 
                         <img
-                            src={user.picture}
+                            src={user.pictureUrl}
                             alt={user.name + "'s Profile Picture"}
                             className="w-24 h-24 rounded-full border border-gray-300 object-cover"
                         />
@@ -76,7 +86,7 @@ const UserCard = () => {
                     </div>
                 </>
             ) : (
-                <div>Loading...</div>
+                <Loading />
             )}
         </div>
 

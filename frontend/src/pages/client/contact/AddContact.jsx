@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function AddContact({ closeModal, onContactAdded }) {
+    const userName = sessionStorage.getItem('userName');
     const initialFormData = {
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
-        company: "", // Stores the selected company ID or name
+        companyId: "",
+        userName: userName
     };
 
     const [formData, setFormData] = useState(initialFormData);
@@ -18,7 +20,9 @@ export default function AddContact({ closeModal, onContactAdded }) {
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/company"); // Adjust the URL
+                const response = await axios.get(`http://localhost:8080/api/companies/u/${userName}`); // Adjust the URL
+                console.log(response.data);
+            
                 setCompanies(response.data);
             } catch (err) {
                 console.error("Error fetching companies:", err);
@@ -37,9 +41,9 @@ export default function AddContact({ closeModal, onContactAdded }) {
     };
 
     const validateForm = () => {
-        const { firstName, lastName, email, phone, company } = formData;
+        const { firstName, lastName, email, phone, companyId } = formData;
 
-        if (!firstName || !lastName || !email || !phone || !company) {
+        if (!firstName || !lastName || !email || !phone || !companyId) {
             setError("All fields are required.");
             return false;
         }
@@ -70,7 +74,8 @@ export default function AddContact({ closeModal, onContactAdded }) {
         }
 
         try {
-            await axios.post("http://localhost:8080/api/contacts", formData);
+            console.log(formData);
+            await axios.post(`http://localhost:8080/api/contacts`, formData,);
             alert("Contact saved successfully!");
             setFormData(initialFormData);
             onContactAdded(); // Refresh contacts in parent component
@@ -137,8 +142,8 @@ export default function AddContact({ closeModal, onContactAdded }) {
             </div>
             <div className="mb-4">
                 <select
-                    name="company"
-                    value={formData.company}
+                    name="companyId"
+                    value={formData.companyId}
                     onChange={handleChange}
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
@@ -149,6 +154,7 @@ export default function AddContact({ closeModal, onContactAdded }) {
                         </option>
                     ))}
                 </select>
+
             </div>
             <button
                 type="submit"

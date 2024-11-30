@@ -10,14 +10,17 @@ export default function Contacts() {
   // Open and close modal
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   // Fetch all contacts or search results based on searchTerm
   const fetchContacts = async () => {
     try {
+      
+      const userName = sessionStorage.getItem('userName');
+     
       const url = searchTerm
-        ? `http://localhost:8080/api/contacts/search?query=${searchTerm}`
-        : `http://localhost:8080/api/contacts`;
-      const response = await axios.get(url);
+        ? `http://localhost:8080/api/contacts/u/${userName}/search?query=${searchTerm}`
+        : `http://localhost:8080/api/contacts/u/${userName}`;
+      const response = await axios.get(url,{withCredentials:true});
+      console.log(response.data);
       setContacts(response.data); // Update contacts state with API response
     } catch (err) {
       console.error("Error fetching contacts:", err);
@@ -55,7 +58,7 @@ export default function Contacts() {
         <tbody>
           {contacts.length > 0 ? (
             contacts.map((contact, index) => (
-              <tr key={contact.id} className="border-b hover:bg-gray-50">
+              <tr key={index} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="p-4 flex items-center">
                   <img
@@ -67,7 +70,7 @@ export default function Contacts() {
                 </td>
                 <td className="px-4 py-2">{contact.email}</td>
                 <td className="px-4 py-2">{contact.phone}</td>
-                <td className="px-4 py-2">{contact.company?.name || "N/A"}</td>
+                <td className="px-4 py-2">{contact.companyName || "N/A"}</td>
               </tr>
             ))
           ) : (

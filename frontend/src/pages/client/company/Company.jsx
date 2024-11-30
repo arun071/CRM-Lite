@@ -14,9 +14,11 @@ export default function Company() {
   // Fetch all company or search results based on searchTerm
   const fetchCompany = async () => {
     try {
+      const userName = sessionStorage.getItem('userName');
+      
       const url = searchTerm
-        ? `http://localhost:8080/api/company/search?query=${searchTerm}`
-        : `http://localhost:8080/api/company`;
+        ? `http://localhost:8080/api/companies/u/${userName}search?query=${searchTerm}`
+        : `http://localhost:8080/api/companies/u/${userName}`;
       const response = await axios.get(url);
       console.log(response.data)
       setCompany(response.data); // Update company state with API response
@@ -56,7 +58,7 @@ export default function Company() {
         <tbody>
           {company.length > 0 ? (
             company.map((company, index) => (
-              <tr key={company.id} className="border-b hover:bg-gray-50">
+              <tr key={index} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="p-4 flex items-center">
                   <img

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function AddLeadModal({ closeModal, onLeadAdded }) {
+  const userName = sessionStorage.getItem('userName');
+
   const initialFormData = {
-    contact: { id: '' },
+    contactId: '',
     status: '',
     source: '',
     estimatedValue: '',
+    userName: userName,
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -17,41 +20,45 @@ export default function AddLeadModal({ closeModal, onLeadAdded }) {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/contacts');
+        const response = await axios.get(`http://localhost:8080/api/contacts/u/${userName}`);
+        console.log(response.data);
         setContactOptions(response.data);
       } catch (err) {
         console.error('Error fetching contacts:', err);
+        setError('Failed to fetch contacts. Please try again.');
       }
     };
 
     fetchContacts();
-  }, []);
+  }, [userName]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => {
-      if (name === 'contact') {
-        return { ...prevData, contact: { id: value } };
-      }
-      return { ...prevData, [name]: value };
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const validateForm = () => {
-    const { contact, status, source, estimatedValue } = formData;
-    if (!contact.id || !status || !source || !estimatedValue) {
+    const { contactId, status, source, estimatedValue } = formData;
+
+    if (!contactId || !status || !source || !estimatedValue) {
       setError('All fields are required.');
       return false;
     }
+
     setError('');
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validateForm()) return;
 
     try {
+      console.log(formData);
       await axios.post('http://localhost:8080/api/leads', formData);
       setSuccess('Lead added successfully!');
       setFormData(initialFormData);
@@ -69,27 +76,28 @@ export default function AddLeadModal({ closeModal, onLeadAdded }) {
       {error && <p className="text-red-500 text-center">{error}</p>}
       {success && <p className="text-green-500 text-center">{success}</p>}
       <form onSubmit={handleSubmit}>
-      <div className="flex justify-end">
-                <button
-                    type="button"
-                    onClick={closeModal}
-                    className="text-black hover:bg-red-500 hover:text-white text-2xl h-10 w-10 rounded"
-                >
-                    X
-                </button>
-            </div>
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={closeModal}
+            className="text-black hover:bg-red-500 hover:text-white text-2xl h-10 w-10 rounded"
+          >
+            X
+          </button>
+        </div>
+
         {/* Contact Selection */}
         <div className="mb-4">
           <label className="block text-gray-700">Select Contact</label>
           <select
-            name="contact"
-            value={formData.contact.id}
+            name="contactId"
+            value={formData.contactId}
             onChange={handleChange}
             className="w-full p-3 border border-gray-300 rounded-md"
           >
             <option value="">Select a contact</option>
-            {contactOptions.map((contact) => (
-              <option key={contact.id} value={contact.id}>
+            {contactOptions.map((contact,index) => (
+              <option key={index} value={contact.id}>
                 {contact.firstName} {contact.lastName}
               </option>
             ))}
@@ -139,7 +147,6 @@ export default function AddLeadModal({ closeModal, onLeadAdded }) {
           Add Lead
         </button>
       </form>
-     
     </div>
   );
 }

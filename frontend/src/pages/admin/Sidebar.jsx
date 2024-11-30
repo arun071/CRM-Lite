@@ -4,16 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const handleLogout = async () => {
-    try {
-      await axios.get("http://localhost:8080/api/v1/logout", {
-        withCredentials: true,
-      });
-      navigate("/signin");
-    } catch (err) {
-      console.error("Error logging out:", err);
-    }
-  };
+  
+    const handleLogout = () => {
+      // Remove the token from local storage
+      localStorage.removeItem('token');
+      // Redirect to login or home page
+      navigate('/signin');
+    };
+
   return (
     <aside className="w-64 bg-gray-800 text-white flex flex-col sticky top-0 h-screen">
       {/* Sidebar Header */}
@@ -48,7 +46,10 @@ export default function Sidebar() {
       {/* Logout Button */}
       <div className="p-4 border-t border-gray-700">
         <button
-          onClick={() => { handleLogout() }}
+          onClick={(e) => { 
+            e.preventDefault();
+            handleLogout();
+           }}
           className="w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
         >
           Logout

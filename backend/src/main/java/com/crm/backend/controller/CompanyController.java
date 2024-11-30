@@ -1,35 +1,43 @@
 package com.crm.backend.controller;
 
-import com.crm.backend.model.Company;
+import com.crm.backend.dto.CompanyDTO;
 import com.crm.backend.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping("/api/companies")
 public class CompanyController {
+
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping("/search")
-    public List<Company> searchCompanyByName(@RequestParam String query) {
-        return companyService.searchCompanyByName(query);
-    }
-
-    @GetMapping
-    public List<Company> getCompanies() {
-        return companyService.getCompanies();
+    @GetMapping("/u/{userName}")
+    public ResponseEntity<List<CompanyDTO>> getAllCompanies(@PathVariable String userName) {
+        return ResponseEntity.ok(companyService.getAllCompanies(userName));
     }
 
     @PostMapping
-    public Company createCompany(@RequestBody Company company) {
-        return companyService.saveCompany(company);
+    public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO dto) {
+        return ResponseEntity.ok(companyService.createCompany(dto));
     }
-    @GetMapping("/id")
-    public Optional<Company> getCompanyById(@RequestParam Long id) {
-        return companyService.getCompany(id);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable Long id) {
+        return ResponseEntity.ok(companyService.getCompanyById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CompanyDTO> updateCompany(@PathVariable Long id, @RequestBody CompanyDTO dto) {
+        return ResponseEntity.ok(companyService.updateCompany(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
+        companyService.deleteCompany(id);
+        return ResponseEntity.noContent().build();
     }
 }

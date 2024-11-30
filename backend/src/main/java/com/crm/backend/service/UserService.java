@@ -6,32 +6,49 @@ import com.crm.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveOrUpdateUser(User user) {
+    public User signup(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEnabled(true);
         return userRepository.save(user);
     }
 
-    public Optional<User> findUserById(Long userId) {
-        return userRepository.findById(userId);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    public Long findUserId(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.map(User::getId).orElse(null);
     }
 
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    public void authenticate(String username, String password) {
+        // Find the user by username
+        User user = findByUsername(username);
+
+        // Check if the password matches
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+
+        // Optionally, you can add additional logic here (e.g., checking if the user is enabled)
     }
 }

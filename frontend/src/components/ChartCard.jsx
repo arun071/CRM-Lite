@@ -3,34 +3,33 @@ import ReactECharts from 'echarts-for-react';
 
 export default function ChartCard() {
 
-  // Chart 1: Student Enrollment Line Chart
-  const enrollmentOption = {
-    // title: { text: 'Student Enrollment Trend' },
+  // Chart 1: Sales Trend Line Chart
+  const salesOption = {
     xAxis: { 
       type: 'category', 
-      data: ['2018', '2019', '2020', '2021', '2022', '2023'], 
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], 
     },
     yAxis: { type: 'value' },
     series: [{
-      name: 'Enrollment',
+      name: 'Sales',
       type: 'line',
-      data: [500, 550, 600, 620, 700, 750],
-      itemStyle: { color: '#4caf50' },
+      data: [1000, 1200, 1800, 2200, 2500, 3000],
+      itemStyle: { color: '#4287f5' },
     }],
     tooltip: { trigger: 'axis' },
   };
 
-  // Chart 2: Student Attendance Pie Chart
-  const attendanceOption = {
-    // title: { text: 'Class Attendance', subtext: 'Daily Attendance', left: 'center' },
+  // Chart 2: Lead Distribution Pie Chart
+  const leadOption = {
     tooltip: { trigger: 'item' },
     series: [{
-      name: 'Attendance',
+      name: 'Lead Distribution',
       type: 'pie',
       radius: '50%',
       data: [
-        { value: 85, name: 'Present' },
-        { value: 15, name: 'Absent' },
+        { value: 50, name: 'Qualified' },
+        { value: 30, name: 'In Progress' },
+        { value: 20, name: 'Lost' },
       ],
       emphasis: {
         itemStyle: {
@@ -42,36 +41,34 @@ export default function ChartCard() {
     }],
   };
 
-  // Chart 3: Subject Performance Bar Chart
-  const performanceOption = {
-    // title: { text: 'Average Marks Per Subject' },
+  // Chart 3: Customer Satisfaction Bar Chart
+  const satisfactionOption = {
     xAxis: {
       type: 'category',
-      data: ['Math', 'Science', 'English', 'History', 'Art'],
+      data: ['Support', 'Product', 'Pricing', 'Delivery', 'Overall'],
     },
     yAxis: { type: 'value' },
     series: [{
-      name: 'Marks',
+      name: 'Satisfaction',
       type: 'bar',
-      data: [80, 90, 75, 85, 88],
-      itemStyle: { color: 'rgba(255, 99, 132, 0.8)' },
+      data: [85, 90, 80, 88, 92],
+      itemStyle: { color: 'rgba(54, 162, 235, 0.8)' },
     }],
     tooltip: { trigger: 'axis' },
   };
 
-  // Chart 4: Fee Collection Doughnut Chart
-  const feeOption = {
-    // title: { text: 'Fee Collection', subtext: 'Yearly Distribution', left: 'center' },
+  // Chart 4: Revenue Streams Doughnut Chart
+  const revenueOption = {
     tooltip: { trigger: 'item' },
     series: [{
-      name: 'Fee Collection',
+      name: 'Revenue Streams',
       type: 'pie',
       radius: ['40%', '70%'],  // Doughnut shape
       data: [
-        { value: 300000, name: 'Tuition' },
-        { value: 50000, name: 'Library' },
-        { value: 25000, name: 'Transport' },
-        { value: 15000, name: 'Sports' },
+        { value: 50000, name: 'Product Sales' },
+        { value: 20000, name: 'Consulting' },
+        { value: 15000, name: 'Subscriptions' },
+        { value: 10000, name: 'Other' },
       ],
       emphasis: {
         itemStyle: {
@@ -84,47 +81,46 @@ export default function ChartCard() {
   };
 
   return (
-<>
-    {/* Enrollment Trend Line Chart */}
-    <div className="w-full h-200 p-2">
-      <div className="bg-white shadow-md rounded-lg">
-        <div className="p-4">
-          <h5 className="text-lg font-semibold mb-4">Student Enrollment Trend</h5>
-          <ReactECharts option={enrollmentOption} style={{ height: '300px', width: '100%' }} />
+    <>
+      {/* Sales Trend Line Chart */}
+      <div className="w-full h-200 p-2">
+        <div className="bg-white shadow-md rounded-lg">
+          <div className="p-4">
+            <h5 className="text-lg font-semibold mb-4">Monthly Sales Trend</h5>
+            <ReactECharts option={salesOption} style={{ height: '300px', width: '100%' }} />
+          </div>
         </div>
       </div>
-    </div>
-  
-    {/* Attendance Pie Chart */}
-    <div className="w-full h-200 p-2">
-      <div className="bg-white shadow-md rounded-lg">
-        <div className="p-4">
-          <h5 className="text-lg font-semibold mb-4">Class Attendance</h5>
-          <ReactECharts option={attendanceOption} style={{ height: '300px', width: '100%' }} />
+    
+      {/* Lead Distribution Pie Chart */}
+      <div className="w-full h-200 p-2">
+        <div className="bg-white shadow-md rounded-lg">
+          <div className="p-4">
+            <h5 className="text-lg font-semibold mb-4">Lead Distribution</h5>
+            <ReactECharts option={leadOption} style={{ height: '300px', width: '100%' }} />
+          </div>
         </div>
       </div>
-    </div>
-  
-    {/* Subject Performance Bar Chart */}
-    <div className="w-full p-2">
-      <div className="bg-white shadow-md rounded-lg">
-        <div className="p-4">
-          <h5 className="text-lg font-semibold mb-4">Average Marks Per Subject</h5>
-          <ReactECharts option={performanceOption} style={{ height: '300px', width: '100%' }} />
+    
+      {/* Customer Satisfaction Bar Chart */}
+      <div className="w-full p-2">
+        <div className="bg-white shadow-md rounded-lg">
+          <div className="p-4">
+            <h5 className="text-lg font-semibold mb-4">Customer Satisfaction</h5>
+            <ReactECharts option={satisfactionOption} style={{ height: '300px', width: '100%' }} />
+          </div>
         </div>
       </div>
-    </div>
-  
-    {/* Fee Collection Doughnut Chart */}
-    <div className="w-full p-2">
-      <div className="bg-white shadow-md rounded-lg">
-        <div className="p-4">
-          <h5 className="text-lg font-semibold mb-4">Fee Collection Distribution</h5>
-          <ReactECharts option={feeOption} style={{ height: '300px', width: '100%' }} />
+    
+      {/* Revenue Streams Doughnut Chart */}
+      <div className="w-full p-2">
+        <div className="bg-white shadow-md rounded-lg">
+          <div className="p-4">
+            <h5 className="text-lg font-semibold mb-4">Revenue Streams</h5>
+            <ReactECharts option={revenueOption} style={{ height: '300px', width: '100%' }} />
+          </div>
         </div>
       </div>
-    </div>
     </>
-  
   );
 }

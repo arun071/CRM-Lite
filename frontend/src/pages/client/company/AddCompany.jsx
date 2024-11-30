@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function AddCompany({ closeModal, onCompanyAdded }) {
+    const userName = sessionStorage.getItem('userName');
+
     const initialFormData = {
+        
         name: "",
         website: "",
         phone: "",
-        address: ""
+        address: "",
+        userName: userName // Use userId from sessionStorage or default to 1
     };
 
     const [formData, setFormData] = useState(initialFormData);
@@ -54,7 +58,8 @@ export default function AddCompany({ closeModal, onCompanyAdded }) {
         }
 
         try {
-            await axios.post("http://localhost:8080/api/company", formData,{withCredentials:true}); // Adjust API URL
+            console.log(formData);
+            await axios.post("http://localhost:8080/api/companies", formData);
             alert("Company saved successfully!");
             setFormData(initialFormData); // Reset form
             onCompanyAdded(); // Refresh companies in parent component

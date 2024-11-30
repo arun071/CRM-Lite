@@ -17,8 +17,10 @@ public class Contact {
     private String lastName;
     private String email;
     private String phone;
-
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+    @ManyToOne // Assuming a Company can be associated with one User
+    @JoinColumn(name = "user_id", nullable = false) // Sets the foreign key column
+    private User user;
 }
