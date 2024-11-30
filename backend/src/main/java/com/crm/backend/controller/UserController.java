@@ -1,6 +1,4 @@
 package com.crm.backend.controller;
-
-
 import com.crm.backend.auth.AuthRequest;
 import com.crm.backend.auth.AuthResponse;
 import com.crm.backend.auth.JwtUtil;
@@ -14,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 public class UserController {
+    private final UserService userService;
+    private final JwtUtil jwtUtil;  // Inject JwtUtil
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Autowired
-    private UserService userService;
-
-
-    @Autowired
-    private JwtUtil jwtUtil;  // Inject JwtUtil
-
-    @Autowired
-    private TokenBlacklistService tokenBlacklistService;
+    public UserController(UserService userService, JwtUtil jwtUtil, TokenBlacklistService tokenBlacklistService) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+        this.tokenBlacklistService = tokenBlacklistService;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody User user) {
