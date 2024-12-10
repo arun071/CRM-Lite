@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default function AddCompany({ closeModal, onCompanyAdded }) {
     const userName = sessionStorage.getItem('userName');
+    const url = import.meta.env.VITE_API_URL;
 
     const initialFormData = {
         
@@ -59,7 +60,7 @@ export default function AddCompany({ closeModal, onCompanyAdded }) {
 
         try {
             console.log(formData);
-            await axios.post("http://localhost:8080/api/companies", formData);
+            await axios.post(`${url}/companies`, formData);
             alert("Company saved successfully!");
             setFormData(initialFormData); // Reset form
             onCompanyAdded(); // Refresh companies in parent component

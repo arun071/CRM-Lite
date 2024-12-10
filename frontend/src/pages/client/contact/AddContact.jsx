@@ -11,7 +11,7 @@ export default function AddContact({ closeModal, onContactAdded }) {
         companyId: "",
         userName: userName
     };
-
+    const url = import.meta.env.VITE_API_URL;
     const [formData, setFormData] = useState(initialFormData);
     const [error, setError] = useState("");
     const [companies, setCompanies] = useState([]);
@@ -20,7 +20,7 @@ export default function AddContact({ closeModal, onContactAdded }) {
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/companies/u/${userName}`); // Adjust the URL
+                const response = await axios.get(`${url}/companies/u/${userName}`); // Adjust the URL
                 console.log(response.data);
             
                 setCompanies(response.data);
@@ -75,7 +75,7 @@ export default function AddContact({ closeModal, onContactAdded }) {
 
         try {
             console.log(formData);
-            await axios.post(`http://localhost:8080/api/contacts`, formData,);
+            await axios.post(`${url}/contacts`, formData,);
             alert("Contact saved successfully!");
             setFormData(initialFormData);
             onContactAdded(); // Refresh contacts in parent component

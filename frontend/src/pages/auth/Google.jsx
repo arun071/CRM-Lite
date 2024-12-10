@@ -1,8 +1,9 @@
 import React from 'react'
 
 export default function Google() {
+    const url = import.meta.env.VITE_API_URL_2;
     const googleLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+        window.location.href = `${url}/oauth2/authorization/google`;
     };
     return (
         <>

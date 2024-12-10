@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AddCompany from "./AddCompany";
 
 export default function Company() {
+  const url = import.meta.env.VITE_API_URL;
   const [searchTerm, setSearchTerm] = useState(""); // Search input state
   const [company, setCompany] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,10 +17,10 @@ export default function Company() {
     try {
       const userName = sessionStorage.getItem('userName');
       
-      const url = searchTerm
-        ? `http://localhost:8080/api/companies/u/${userName}search?query=${searchTerm}`
-        : `http://localhost:8080/api/companies/u/${userName}`;
-      const response = await axios.get(url);
+      const getUrl = searchTerm
+        ? `${url}/companies/u/${userName}search?query=${searchTerm}`
+        : `${url}/companies/u/${userName}`;
+      const response = await axios.get(getUrl);
       console.log(response.data)
       setCompany(response.data); // Update company state with API response
     } catch (err) {

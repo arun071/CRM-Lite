@@ -6,7 +6,7 @@ export default function Contacts() {
   const [searchTerm, setSearchTerm] = useState(""); // Search input state
   const [contacts, setContacts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const url = import.meta.env.VITE_API_URL;
   // Open and close modal
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -16,10 +16,10 @@ export default function Contacts() {
       
       const userName = sessionStorage.getItem('userName');
      
-      const url = searchTerm
-        ? `http://localhost:8080/api/contacts/u/${userName}/search?query=${searchTerm}`
-        : `http://localhost:8080/api/contacts/u/${userName}`;
-      const response = await axios.get(url,{withCredentials:true});
+      const getUrl = searchTerm
+        ? `${url}/contacts/u/${userName}/search?query=${searchTerm}`
+        : `${url}/contacts/u/${userName}`;
+      const response = await axios.get(getUrl,{withCredentials:true});
       console.log(response.data);
       setContacts(response.data); // Update contacts state with API response
     } catch (err) {

@@ -4,6 +4,7 @@ import Google from "./Google";
 import axios from "axios";
 
 const Signup = () => {
+    const url = import.meta.env.VITE_API_URL_2;
     const navigate = useNavigate();
     const [userData, setUserData] = useState({
         username: "",
@@ -21,7 +22,7 @@ const Signup = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:8080/signup", userData);
+            const response = await axios.post(`${url}/signup`, userData);
             if (response.status === 200) {
                 localStorage.setItem("token", response.data.token); // Save JWT token
                 sessionStorage.setItem("userName", userData.username);

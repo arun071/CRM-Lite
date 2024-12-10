@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default function AddLeadModal({ closeModal, onLeadAdded }) {
   const userName = sessionStorage.getItem('userName');
-
+  const url = import.meta.env.VITE_API_URL;
   const initialFormData = {
     contactId: '',
     status: '',
@@ -20,7 +20,7 @@ export default function AddLeadModal({ closeModal, onLeadAdded }) {
   useEffect(() => {
     const fetchContacts = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/contacts/u/${userName}`);
+        const response = await axios.get(`${url}/contacts/u/${userName}`);
         console.log(response.data);
         setContactOptions(response.data);
       } catch (err) {
@@ -59,7 +59,7 @@ export default function AddLeadModal({ closeModal, onLeadAdded }) {
 
     try {
       console.log(formData);
-      await axios.post('http://localhost:8080/api/leads', formData);
+      await axios.post(`${url}/leads`, formData);
       setSuccess('Lead added successfully!');
       setFormData(initialFormData);
       onLeadAdded(); // Refresh the leads list in parent component

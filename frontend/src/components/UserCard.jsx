@@ -7,6 +7,7 @@ const UserCard = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const url = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
 
@@ -16,7 +17,7 @@ const UserCard = () => {
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/api/v1/userinfo", {
+            const response = await axios.get(`${url}/userinfo`, {
                 withCredentials: true,
             });
              // Store userId in sessionStorage

@@ -4,6 +4,7 @@ import AddLead from "./AddLead";
 import AddLeadModal from "./AddLead";
 
 export default function Leads() {
+  const url = import.meta.env.VITE_API_URL;
   const [searchTerm, setSearchTerm] = useState(""); // Search input state
   const [leads, setLeads] = useState([]); // Leads data state
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
@@ -17,10 +18,10 @@ export default function Leads() {
   const userName = sessionStorage.getItem('userName');
 
     try {
-      const url = searchTerm
-        ? `http://localhost:8080/api/leads/u/${userName}/search?query=${searchTerm}`
-        : `http://localhost:8080/api/leads/u/${userName}`;
-      const response = await axios.get(url);
+      const getUrl = searchTerm
+        ? `${url}/leads/u/${userName}/search?query=${searchTerm}`
+        : `${url}/leads/u/${userName}`;
+      const response = await axios.get(getUrl);
       console.log(response.data);
       setLeads(response.data);
     } catch (err) {

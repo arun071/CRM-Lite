@@ -4,6 +4,7 @@ import axios from "axios";
 import Google from "./Google";
 
 const Signin = () => {
+  const url = import.meta.env.VITE_API_URL_2;
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Signin = () => {
     e.preventDefault();
     setError(""); // Clear previous errors
     try {
-      const response = await axios.post("http://localhost:8080/signin", loginData);
+      const response = await axios.post(`${url}/signin`, loginData);
       localStorage.setItem("token", response.data.token); // Save JWT token
       console.log(loginData);
       
