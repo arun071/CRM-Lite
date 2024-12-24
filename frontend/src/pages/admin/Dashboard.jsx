@@ -1,6 +1,5 @@
 import React from 'react';
 import ChartCard from '../../components/ChartCard';
-import UserCard from '../../components/UserCard';
 
 export default function Dashboard() {
     return (
@@ -21,7 +20,6 @@ export default function Dashboard() {
                     <h2 className="text-lg font-semibold mb-2">Pending Tasks</h2>
                     <p className="text-3xl font-bold text-yellow-600">8</p>
                 </div>
-                <UserCard />
                 <ChartCard />
             </div>
         </div>

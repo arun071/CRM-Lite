@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 // Import all module components
 import Dashboard from "./Dashboard";
-import Pipelines from "./Pipelines";
 import Products from "./Products";
 import Activities from "./Activities";
 import Sidebar from "./Sidebar";
@@ -11,6 +10,7 @@ import Leads from "../client/leads/Leads";
 import Company from "../client/company/Company";
 import PageNotFound from "./PageNotFound";
 import Contacts from "../client/contact/Contacts";
+import Pipelines from "../client/pipeline/Pipelines";
 
 export default function AdminPanel() {
     return (
@@ -27,7 +27,7 @@ export default function AdminPanel() {
                     <Route path="/companies" element={<Company />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/activities" element={<Activities />} />
-                    <Route path="/*" element={<PageNotFound />} />
+                    <Route path="/*" element={<Dashboard />} />
                 </Routes>
             </main>
         </div>

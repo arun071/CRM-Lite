@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Google from "./Google";
 
 const Signin = () => {
   const url = import.meta.env.VITE_API_URL_2;
@@ -102,17 +101,17 @@ const Signin = () => {
         </p>
 
         {/* Divider */}
-        <div className="relative my-6">
+        {/* <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="px-4 bg-white text-gray-600">Or</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Google Sign-In Button */}
-        <Google />
+        {/* <Google /> */}
       </div>
     </div>
   );

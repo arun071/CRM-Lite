@@ -1,11 +1,13 @@
 package com.crm.backend.controller;
 
 import com.crm.backend.dto.LeadDTO;
+import com.crm.backend.enums.LeadStatus;
 import com.crm.backend.service.LeadsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -14,6 +16,11 @@ public class LeadsController {
 
     @Autowired
     private LeadsService leadService;
+
+    @GetMapping("/u/{userName}/pipelines")
+    public Map<LeadStatus, List<LeadDTO>> getAlLeadsByUser(@PathVariable String userName) {
+        return leadService.getLeadsByUserAndLeadStatus(userName);
+    }
 
     // Get all leads for a specific user
     @GetMapping("/u/{userName}")

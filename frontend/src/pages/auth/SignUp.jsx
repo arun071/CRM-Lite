@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Google from "./Google";
 import axios from "axios";
 
 const Signup = () => {
@@ -50,7 +49,7 @@ const Signup = () => {
                     {error && <p className="text-red-500 text-sm">{error}</p>}
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                            Full Name
+                            User Name
                         </label>
                         <input
                             type="text"
@@ -111,15 +110,15 @@ const Signup = () => {
                         Log in
                     </Link>
                 </p>
-                <div className="relative my-6">
+                {/* <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
                         <div className="w-full border-t border-gray-300"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
                         <span className="px-4 bg-white text-gray-600">Or</span>
                     </div>
-                </div>
-                <Google />
+                </div> */}
+                {/* <Google /> */}
             </div>
         </div>
     );

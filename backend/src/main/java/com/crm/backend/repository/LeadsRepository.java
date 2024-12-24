@@ -12,6 +12,5 @@ import java.util.List;
 @Repository
 public interface LeadsRepository extends JpaRepository<Leads, Long> {
     List<Leads> findByStatus(LeadStatus status);
-
     List<Leads> findByUser(User user);
 }

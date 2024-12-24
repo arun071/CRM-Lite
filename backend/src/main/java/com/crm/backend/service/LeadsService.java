@@ -1,6 +1,7 @@
 package com.crm.backend.service;
 
 import com.crm.backend.dto.LeadDTO;
+import com.crm.backend.enums.LeadStatus;
 import com.crm.backend.mapper.LeadMapper;
 import com.crm.backend.model.Leads;
 import com.crm.backend.model.Contact;
@@ -11,7 +12,9 @@ import com.crm.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,4 +88,25 @@ public class LeadsService {
 
         return LeadMapper.toDTO(lead, user, contact);
     }
+
+    // Get a lead by Stages
+
+    public Map<LeadStatus, List<LeadDTO>> getLeadsByUserAndLeadStatus(String userName) {
+        User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Leads> leads = leadRepository.findByUser(user);
+
+        Map<LeadStatus, List<LeadDTO>> leadsByStage = new HashMap<>();
+        for (LeadStatus stage : LeadStatus.values()) {
+            leadsByStage.put(stage, leads.stream()
+                    .filter(lead -> lead.getStatus() == stage)
+                    .map(lead -> LeadMapper.toDTO(lead, user, contactRepository.findById(lead.getContact().getId())
+                            .orElseThrow(() -> new RuntimeException("Contact not found"))))
+                    .collect(Collectors.toList()));
+        }
+
+        return leadsByStage;
+    }
+
 }
